@@ -1,6 +1,6 @@
 namespace Company_ManagementAPI.Services;
 
-public interface IRandomStringGenerator
+public interface IRandomStringGeneratorService
 {
-    Task<string> GenerateAsync();
+    Task<string> GenerateCodeAsync();
 }

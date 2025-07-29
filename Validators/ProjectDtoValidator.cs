@@ -1,6 +1,16 @@
+using Company_ManagementAPI.DTO;
+using FluentValidation;
+
 namespace Company_ManagementAPI.Validators;
 
-public class ProjectDtoValidator
+public class ProjectDtoValidator: AbstractValidator<ProjectDto>
 {
-    
+    public ProjectDtoValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Project name is required.");
+
+        RuleFor(x => x.Budget)
+            .GreaterThan(0).WithMessage("Budget must be greater than zero.");
+    }
 }
