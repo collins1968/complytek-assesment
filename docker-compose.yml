@@ -12,7 +12,7 @@
 
   api:
     build:
-      context: .
+      context: ./CompanyManagementAPI
       dockerfile: Dockerfile
     container_name: company_api
     depends_on:

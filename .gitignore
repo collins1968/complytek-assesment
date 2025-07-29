@@ -41,6 +41,7 @@ TestResults/
 # VS Code / Rider IDE settings
 .vscode/
 .idea/
+.vs/
 
 # OS generated
 .DS_Store
