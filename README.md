@@ -64,3 +64,8 @@ Once the containers are running, open your browser:
 ![img.png](img.png)
 
 Use Swagger to test all available endpoints.
+### 3️⃣Running Unit Tests
+To run unit tests, navigate to the test project directory and run:
+```
+dotnet test
+```
