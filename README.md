@@ -19,12 +19,16 @@ The API uses **FluentValidation**, **Entity Framework Core**, and is containeriz
 ## 🚀 Getting Started
 
 ### 🔧 Prerequisites
-
+#### Quick Installation
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+  
+#### Development
 Make sure the following tools are installed:
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Git](https://git-scm.com/)
+  
 
 ---
 
@@ -46,14 +50,14 @@ This will:
 - Build the API image
 - Set up a SQL Server container
 - Run database migrations
-- Launch the API at http://localhost:5014/
+
+> [!NOTE]
+> Access the API at http://localhost:5014. 
 
 ## Access API Documentation
 Once the containers are running, open your browser:
 
  Swagger UI
  http://localhost:5014/swagger/index.html
-
-![img.png](img.png)
 
 Use Swagger to test all available endpoints.
