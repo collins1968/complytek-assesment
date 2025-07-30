@@ -62,8 +62,8 @@ public static class EmployeeEndpoints
         
         group.MapPost("/assign", async (
             AssignEmployeeDto dto,
-            IEmployeeService service,
-            IValidator<AssignEmployeeDto> validator) =>
+            IValidator<AssignEmployeeDto> validator,
+            IEmployeeService service) =>
         {
             var validationResult = await validator.ValidateAsync(dto);
             if (!validationResult.IsValid)
@@ -76,19 +76,12 @@ public static class EmployeeEndpoints
             return Results.Ok(result);
         });
         
-        group.MapDelete("/remove", async (
-            AssignEmployeeDto dto,
-            IEmployeeService service,
-            IValidator<AssignEmployeeDto> validator) =>
+        group.MapDelete("/remove/{employeeId}/{projectId}", async (
+            Guid employeeId,
+            Guid projectId,
+            IEmployeeService service) =>
         {
-            var validationResult = await validator.ValidateAsync(dto);
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return Results.BadRequest(errors);
-            }
-
-            var result = await service.RemoveEmployeeFromProjectAsync(dto.EmployeeId, dto.ProjectId);
+            var result = await service.RemoveEmployeeFromProjectAsync(employeeId, projectId);
             return result ? Results.NoContent() : Results.NotFound("Assignment not found.");
         });
         
