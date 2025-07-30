@@ -10,5 +10,4 @@ public class Employee
     public Guid DepartmentId { get; set; }
     public Department Department { get; set; } 
     public ICollection<EmployeeProject> EmployeeProjects { get; set; } = new List<EmployeeProject>();
-
 }

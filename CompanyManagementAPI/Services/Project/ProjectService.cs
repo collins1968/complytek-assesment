@@ -1,5 +1,7 @@
 using CompanyManagementAPI.Data;
+using CompanyManagementAPI.Domain;
 using CompanyManagementAPI.DTO;
+using CompanyManagementAPI.Extensions;
 using CompanyManagementAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +27,6 @@ public class ProjectService : IProjectService
         using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            //Create project with placeholder Projectcode
             var project = new Project
             {
                 Id = Guid.NewGuid(),
@@ -36,8 +37,7 @@ public class ProjectService : IProjectService
 
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
-
-            // Step 2: Generate random code
+            
             string randomCode;
             try
             {
@@ -45,8 +45,7 @@ public class ProjectService : IProjectService
             }
             catch (Exception ex)
             {
-                // await transaction.RollbackAsync();
-                throw new ApplicationException("Failed to generate project code", ex);
+                throw new ApplicationException(AppErrors.GenerateProjectFail.Description());
             }
             
             project.ProjectCode = $"{randomCode}-{project.Id}";
@@ -83,5 +82,16 @@ public class ProjectService : IProjectService
         _context.Projects.Remove(project);
         await _context.SaveChangesAsync();
         return true;
+    }
+    
+    public async Task<decimal> GetTotalBudgetByDepartmentAsync(Guid departmentId)
+    {
+        var totalBudget = await _context.EmployeeProjects
+            .Where(ep => ep.Employee.DepartmentId == departmentId)
+            .Select(ep => ep.Project)
+            .Distinct() 
+            .SumAsync(p => p.Budget);
+
+        return totalBudget;
     }
 }

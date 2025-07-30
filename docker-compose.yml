@@ -1,7 +1,7 @@
 ﻿services:
-  sqlserver:
+  cmsqlserver:
     image: mcr.microsoft.com/mssql/server:2025-latest
-    container_name: sqlserver
+    container_name: cmsqlserver
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
@@ -9,19 +9,27 @@
       - "1433:1433"
     volumes:
       - sql_data:/var/opt/mssql
+    networks:
+      - companymanagement
 
-  api:
+  cm-api:
     build:
       context: ./CompanyManagementAPI
       dockerfile: Dockerfile
-    container_name: company_api
+    container_name: cm-api
     depends_on:
-      - sqlserver
+      - cmsqlserver
     ports:
-      - "5014:80"
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=companydb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=cmsqlserver;Database=companydb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True; 
+    networks:
+      - companymanagement
 
 volumes:
   sql_data:
+
+networks:
+  companymanagement:
+    driver: bridge

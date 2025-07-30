@@ -51,5 +51,13 @@ public static class ProjectEndpoint
             var deleted = await service.DeleteAsync(id);
             return deleted ? Results.NoContent() : Results.NotFound();
         });
+        
+        group.MapGet("/department/{departmentId:guid}/total-budget", async (
+            Guid departmentId,
+            IProjectService service) =>
+        {
+            var totalBudget = await service.GetTotalBudgetByDepartmentAsync(departmentId);
+            return Results.Ok(new { TotalBudget = totalBudget });
+        });
     }
 }

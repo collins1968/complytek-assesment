@@ -59,5 +59,46 @@ public static class EmployeeEndpoints
             var deleted = await service.DeleteEmployeeAsync(id);
             return deleted ? Results.NoContent() : Results.NotFound();
         });
+        
+        group.MapPost("/assign", async (
+            AssignEmployeeDto dto,
+            IEmployeeService service,
+            IValidator<AssignEmployeeDto> validator) =>
+        {
+            var validationResult = await validator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return Results.BadRequest(errors);
+            }
+
+            var result = await service.AssignEmployeeToProjectAsync(dto);
+            return Results.Ok(result);
+        });
+        
+        group.MapDelete("/remove", async (
+            AssignEmployeeDto dto,
+            IEmployeeService service,
+            IValidator<AssignEmployeeDto> validator) =>
+        {
+            var validationResult = await validator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return Results.BadRequest(errors);
+            }
+
+            var result = await service.RemoveEmployeeFromProjectAsync(dto.EmployeeId, dto.ProjectId);
+            return result ? Results.NoContent() : Results.NotFound("Assignment not found.");
+        });
+        
+        group.MapGet("/employee/{employeeId:guid}", async (
+            Guid employeeId,
+            IEmployeeService service) =>
+        {
+            var projects = await service.GetProjectsForEmployeeAsync(employeeId);
+            return Results.Ok(projects);
+        });
+        
     }
 }

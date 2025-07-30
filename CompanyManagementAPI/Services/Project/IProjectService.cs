@@ -10,4 +10,5 @@ public interface IProjectService
     Task<Project> CreateAsync(ProjectDto dto);
     Task<Project?> UpdateAsync(Guid id, ProjectDto dto);
     Task<bool> DeleteAsync(Guid id);
+    Task<decimal> GetTotalBudgetByDepartmentAsync(Guid departmentId);
 }

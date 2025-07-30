@@ -13,6 +13,7 @@ The API uses **FluentValidation**, **Entity Framework Core**, and is containeriz
 - Validation using FluentValidation
 - API documentation using Swagger
 - Containerized with Docker and Docker Compose
+- Unite test written using xunit
 
 ---
 
@@ -52,12 +53,14 @@ This will:
 - Run database migrations
 
 > [!NOTE]
-> Access the API at http://localhost:5014. 
+> Access the API at http://localhost:8080. 
 
 ## Access API Documentation
 Once the containers are running, open your browser:
 
  Swagger UI
- http://localhost:5014/swagger/index.html
+ http://localhost:8080/swagger/index.html
+
+![img.png](img.png)
 
 Use Swagger to test all available endpoints.

@@ -1,3 +1,6 @@
+using CompanyManagementAPI.Domain;
+using CompanyManagementAPI.Extensions;
+
 namespace CompanyManagementAPI.Services;
 
 public class RandomStringGeneratorService : IRandomStringGeneratorService
@@ -11,13 +14,12 @@ public class RandomStringGeneratorService : IRandomStringGeneratorService
     {
         try
         {
-            var response = await _httpClient.GetStringAsync(
-                "https://www.random.org/strings/?num=1&len=8&digits=on&upperalpha=on&loweralpha=off&unique=on&format=plain&rnd=new");
+            var response = await _httpClient.GetStringAsync("https://codito.io/free-random-code-generator/api/generate");
             return response.Trim();
         }
         catch (HttpRequestException ex)
         {
-            throw new ApplicationException("Failed to generate project code", ex);
+            throw new ApplicationException(AppErrors.GenerateProjectFail.Description(), ex);
         }
     }
 }

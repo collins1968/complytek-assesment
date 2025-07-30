@@ -10,4 +10,7 @@ public interface IEmployeeService
     Task<List<Employee>> GetAllEmployeesAsync();
     Task<Employee?> UpdateEmployeeAsync(Guid id, UpdateEmployeeDto dto);
     Task<bool> DeleteEmployeeAsync(Guid id);
+    Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId, Guid projectId);
+    Task<List<ProjectDto>> GetProjectsForEmployeeAsync(Guid employeeId);
+    Task<bool> AssignEmployeeToProjectAsync(AssignEmployeeDto dto);
 }

@@ -211,7 +211,7 @@ public class ProjectServiceTests
         Assert.Equal(projectId, result.Id);
         Assert.Equal("Updated Name", result.Name);
         Assert.Equal(7000, result.Budget);
-        Assert.Equal("ORIG-CODE", result.ProjectCode); // ProjectCode should remain unchanged
+        Assert.Equal("ORIG-CODE", result.ProjectCode);
 
         // Verify changes were saved to database
         var updatedProject = await _context.Projects.FindAsync(projectId);

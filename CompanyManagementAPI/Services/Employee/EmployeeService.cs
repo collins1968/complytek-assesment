@@ -68,4 +68,52 @@ public class EmployeeService: IEmployeeService
         await _context.SaveChangesAsync();
         return true;
     }
+    
+    public async Task<bool> AssignEmployeeToProjectAsync(AssignEmployeeDto dto)
+    {
+        var exists = await _context.EmployeeProjects
+            .AnyAsync(ep => ep.EmployeeId == dto.EmployeeId && ep.ProjectId == dto.ProjectId);
+
+        if (exists) return false;
+
+        var assignment = new EmployeeProject
+        {
+            EmployeeId = dto.EmployeeId,
+            ProjectId = dto.ProjectId,
+            Role = dto.Role
+        };
+
+        _context.EmployeeProjects.Add(assignment);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> RemoveEmployeeFromProjectAsync(Guid employeeId, Guid projectId)
+    {
+        var assignment = await _context.EmployeeProjects
+            .FirstOrDefaultAsync(ep => ep.EmployeeId == employeeId && ep.ProjectId == projectId);
+
+        if (assignment == null) return false;
+
+        _context.EmployeeProjects.Remove(assignment);
+        await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<List<ProjectDto>> GetProjectsForEmployeeAsync(Guid employeeId)
+    {
+        return await _context.EmployeeProjects
+            .Where(ep => ep.EmployeeId == employeeId)
+            .Include(ep => ep.Project)
+            .Select(ep => new ProjectDto
+            {
+                Id = ep.Project.Id,
+                Name = ep.Project.Name,
+                ProjectCode = ep.Project.ProjectCode,
+                Budget = ep.Project.Budget
+            })
+            .ToListAsync();
+    }
 }

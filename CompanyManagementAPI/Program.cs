@@ -1,8 +1,8 @@
 using CompanyManagementAPI.Data;
 using CompanyManagementAPI.Endpoints;
+using CompanyManagementAPI.Extensions;
 using CompanyManagementAPI.Services;
 using CompanyManagementAPI.Validators;
-// using CompanyManagementAPI.Validators;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 
@@ -28,6 +28,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.ApplyMigrations();
 }
 
 app.MapEmployeeEndpoints();
